@@ -1,0 +1,6 @@
+**/node_modules
+*.css
+*.json
+*.md
+*.yml
+update-packages.js
