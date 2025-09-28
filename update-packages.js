@@ -2,11 +2,11 @@ const fs = require('fs');
 const path = require('path');
 
 const games = [
-  'tanky-tanks',
+  'apocalypse-tank',
 ]
 
-const babylonjs_version = '^8.0.1'
-const khanonjsjs_version = '^0.2.10'
+const babylonjs_version = '^8.17.0'
+const khanonjsjs_version = '^0.2.16'
 
 games.forEach(gameName => {
    console.log(`Updating packages for game '${gameName}'...`)
