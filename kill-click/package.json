@@ -1,0 +1,22 @@
+{
+  "name": "kill-click",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "start": "khanon --start-dev",
+    "start:prod": "khanon --start-prod",
+    "build": "khanon --build-dev",
+    "build:prod": "khanon --build-prod"
+  },
+  "devDependencies": {
+    "@babylonjs/inspector": "~8.32.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@babylonjs/core": "~8.32.1",
+    "@babylonjs/gui": "~8.32.1",
+    "@khanonjs/engine": "0.2.18"
+  }
+}

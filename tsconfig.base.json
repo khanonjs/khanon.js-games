@@ -15,7 +15,8 @@
     "sourceMap": true,
     "preserveConstEnums": true,
     "esModuleInterop": true,
-    "noUnusedLocals": false
+    "noUnusedLocals": false,
+    "noImplicitAny": false
   },
   "types": [
     "babylonjs"
