@@ -1,8 +1,4 @@
-import {
-  Color3,
-  Color4,
-  Mesh
-} from '@babylonjs/core'
+import * as BABYLON from '@babylonjs/core'
 import { CreateGroundFromHeightMap } from '@babylonjs/core/Meshes/Builders/groundBuilder'
 import {
   Logger,
@@ -11,12 +7,11 @@ import {
 } from '@khanonjs/engine'
 
 import { ActorPlayer } from '../../actors/actor-player'
-import { CameraIngame } from './camera-ingame'
 import { SceneStateStart } from './state-start'
 
 @Scene({
   configuration: {
-    clearColor: new Color4(0.25, 0.25, 0.25, 1.0)
+    clearColor: new BABYLON.Color4(0.25, 0.25, 0.25, 1.0)
   },
   states: [
     SceneStateStart
@@ -26,11 +21,12 @@ import { SceneStateStart } from './state-start'
   ]
 })
 export class SceneIngame extends SceneInterface {
-  ground: Mesh
+  ground: BABYLON.Mesh
+  light1: BABYLON.HemisphericLight
 
   onLoaded() {
-    Logger.trace("WTF???")
     this.build()
+    this.light1 = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, 0, 0), this.babylon.scene)
   }
 
   onUnload() {
@@ -77,7 +73,7 @@ export class SceneIngame extends SceneInterface {
     const options = {
       width,
       height,
-      colorFilter: new Color3(1.0, 0.0, 0.0),
+      colorFilter: new BABYLON.Color3(1.0, 0.0, 0.0),
     }
 
     // Create ground from height map

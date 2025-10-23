@@ -12,6 +12,7 @@ import {
 
 import { ActorPlayer } from '../../actors/actor-player'
 import { CameraIngame } from './camera-ingame'
+import { CameraTest } from './camera-test'
 
 @SceneState({
   actors: [
@@ -20,7 +21,7 @@ import { CameraIngame } from './camera-ingame'
 })
 export class SceneStateStart extends SceneStateInterface {
   onStart() {
-    this.switchCamera(CameraIngame, {})
+    this.switchCamera(CameraTest, {})
     this.spawn.actor(ActorPlayer)
   }
 }
