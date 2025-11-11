@@ -7,6 +7,7 @@ import {
 } from '@khanonjs/engine'
 
 import { ActorPlayer } from '../../actors/actor-player'
+import { GroundGenerator } from '../../ground-generator/ground-generator'
 import { SceneStateStart } from './state-start'
 
 @Scene({
@@ -21,8 +22,8 @@ import { SceneStateStart } from './state-start'
   ]
 })
 export class SceneIngame extends SceneInterface {
-  ground: BABYLON.Mesh
   light1: BABYLON.HemisphericLight
+  groundGenerator = new GroundGenerator()
 
   onLoaded() {
     this.build()
@@ -40,43 +41,7 @@ export class SceneIngame extends SceneInterface {
 
   build() {
     Logger.trace('Building scene ingame...')
-    // Define height and width of the height map
-    const height = 64
-    const width = 64
-
-    // Create a simple height map (flat, all zeros)
-    const heightMap = new Uint8Array(width * height)
-    // Optionally, fill with some pattern:
-    // for (let y = 0; y < height; y++) {
-    //   for (let x = 0; x < width; x++) {
-    //     heightMap[y * width + x] = Math.floor(32 + 32 * Math.sin(x / 8) * Math.cos(y / 8))
-    //   }
-    // }
-
-    // Create a Blob URL for the height map as an image
-    // Babylon.js expects an image, so we need to convert the Uint8Array to an image
-    const canvas = document.createElement('canvas')
-    canvas.width = width
-    canvas.height = height
-    const ctx = canvas.getContext('2d')!
-    const imgData = ctx.createImageData(width, height)
-    for (let i = 0; i < heightMap.length; i++) {
-      imgData.data[i * 4 + 0] = heightMap[i] // R
-      imgData.data[i * 4 + 1] = heightMap[i] // G
-      imgData.data[i * 4 + 2] = heightMap[i] // B
-      imgData.data[i * 4 + 3] = 255          // A
-    }
-    ctx.putImageData(imgData, 0, 0)
-    const url_to_height_map = canvas.toDataURL()
-
-    // Options for the ground
-    const options = {
-      width,
-      height,
-      colorFilter: new BABYLON.Color3(1.0, 0.0, 0.0),
-    }
-
-    // Create ground from height map
-    this.ground = CreateGroundFromHeightMap("gdhm", { data: heightMap, height, width }, options, this.babylon.scene)
+    this.groundGenerator.generate(this.babylon.scene)
+    Logger.trace('Scene built')
   }
 }
