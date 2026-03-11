@@ -1,6 +1,7 @@
 /**
  * The ground is built by a random height map, where points under the sea level have water over them,
  * and points over the sea level will go from grass to dust. The uneven ground has a certain range to avoid spikes.
+ * This class returns a Babylon Mesh object.
  */
 import * as BABYLON from '@babylonjs/core'
 import {
@@ -35,6 +36,7 @@ export interface GroundShapeOptions {
   maxAltitude: number // 0 to max height
   minAltitude: number // 0 to min height
   waveFrequency: number // 0 to N frequency of the waves. Higher frequency means more and smaller shapes.
+  quality?: number // 0 to 1. Default 0.5.
 }
 
 export interface GroundBaseOptions extends GroundShapeOptions {
@@ -116,8 +118,8 @@ export class GroundGenerator {
     // Wave frequency is applied as a multiplier to the noise noiseReduction, so higher frequency means more and smaller shapes.
     // Subdivisions are fixed according to the noise reduction, so higher frequency means more subdivisions and better quality, but also worse performance. We can consider to add a max subdivisions limit to avoid performance issues.
     const waveFrequency = this.baseShape.waveFrequency || 1
-    const noiseReduction = 10// sizeFactor * waveFrequency
-    const subdivisions = 20 // 20 is the base subdivisions for wave frequency 1. Higher wave frequency means more subdivisions and better quality, but also worse performance.
+    const noiseReduction = 30// sizeFactor * waveFrequency
+    const subdivisions = 50 // 20 is the base subdivisions for wave frequency 1. Higher wave frequency means more subdivisions and better quality, but also worse performance.
     const amplitude = (this.baseShape.maxAltitude - this.baseShape.minAltitude)
 
     Logger.trace("aki noise reduction", noiseReduction)
@@ -139,7 +141,7 @@ export class GroundGenerator {
       groundHeight: this.baseShape.groundHeight,
       mapWidth: this.baseShape.groundWidth,
       mapHeight: this.baseShape.groundHeight,
-      subdivisions: 200, // subdivisions,
+      subdivisions: subdivisions,
       maxHeight: this.baseShape.maxAltitude, // 8a8f queremos que la amplitud coincida en tamaño con la proporción de otros objetos en la escena
       minHeight: this.baseShape.minAltitude,
     }, scene, new BABYLON.Color3(0, 0, 1))
@@ -246,7 +248,7 @@ export class GroundGenerator {
       subdivisions: options.subdivisions,
       maxHeight: options.maxHeight,
       minHeight: options.minHeight,
-      // colorFilter: new BABYLON.Color3(1, 1, 1), // Points color offset
+      // colorFilter: new BABYLON.Color3(1, 1, 1), // Points color offset. Using this causes inaccurate height. TODO: Why?
     }, scene);
     const mat = new BABYLON.StandardMaterial("wireMat", scene)
     mat.diffuseColor = testColor
@@ -271,7 +273,6 @@ export class GroundGenerator {
       let minV = 999
       let maxV = -999
 
-      // Uint8ClampedArray
       const data = new Uint8Array(options.mapWidth * options.mapHeight * 4)
       const height = new Float32Array(options.mapWidth * options.mapHeight)
       const amplitudeDiv2 = options.amplitude

@@ -44,7 +44,7 @@ export class SceneIngame extends SceneInterface {
     this.groundGenerator.setBaseShape({
       groundWidth: 200,
       groundHeight: 200,
-      maxAltitude: 10,
+      maxAltitude: 20,
       minAltitude: 0,
       waveFrequency: 1
     })
