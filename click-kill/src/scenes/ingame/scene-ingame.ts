@@ -42,10 +42,10 @@ export class SceneIngame extends SceneInterface {
   build() {
     Logger.trace('Building scene ingame...')
     this.groundGenerator.setBaseShape({
-      groundWidth: 100,
-      groundHeight: 100,
+      groundWidth: 200,
+      groundHeight: 200,
       maxAltitude: 10,
-      minAltitude: -10,
+      minAltitude: 0,
       waveFrequency: 1
     })
     this.groundGenerator.generate(this.babylon.scene)
